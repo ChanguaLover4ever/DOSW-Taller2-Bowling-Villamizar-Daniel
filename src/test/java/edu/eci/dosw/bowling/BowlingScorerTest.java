@@ -111,6 +111,20 @@ class BowlingScorerTest {
     }
 
     @Test
+    void shouldScore150_whenAllSparesAndLastRollIs5() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        rollMany(game, 21, 5); // 20 rolls of 5 (10 spares) + 1 final bonus roll of 5
+        BowlingScorer scorer = new BowlingScorer();
+
+        // Act
+        int score = scorer.calculate(game.getFrames());
+
+        // Assert
+        assertEquals(150, score, "A game with all spares and a final 5 should score 150");
+    }
+
+    @Test
     void shouldScore300_whenPerfectGameIsRolled() {
         // Arrange
         BowlingGame game = new BowlingGame();

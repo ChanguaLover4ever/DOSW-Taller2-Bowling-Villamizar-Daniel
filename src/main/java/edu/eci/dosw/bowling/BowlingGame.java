@@ -34,7 +34,8 @@ public class BowlingGame {
 
     private Frame getOrCreateCurrentFrame() {
         if (frames.isEmpty() || frames.get(frames.size() - 1).isFull()) {
-            frames.add(new Frame());
+            boolean isTenth = frames.size() == 9; // If there are 9 frames, the new one is the 10th
+            frames.add(new Frame(isTenth));
         }
         return frames.get(frames.size() - 1);
     }

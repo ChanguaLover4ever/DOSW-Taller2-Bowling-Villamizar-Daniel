@@ -15,4 +15,8 @@ public class Frame {
     public boolean isFull() {
         return rolls == 2; // For now, a frame is full after 2 rolls
     }
+
+    public FrameType getType() {
+        return FrameType.NORMAL; // Hardcoded to force a failure
+    }
 }

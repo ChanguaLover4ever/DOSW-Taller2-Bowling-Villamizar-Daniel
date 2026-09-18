@@ -73,4 +73,20 @@ class BowlingGameTest {
                 "Rolling after 10 frames are complete should throw IllegalStateException"
         );
     }
+
+    @Test
+    void shouldMarkFrameAsStrike_whenRollingTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(10);
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                FrameType.STRIKE,
+                game.getFrames().get(0).getType(),
+                "Frame should be marked as STRIKE when 10 pins are knocked down on the first roll"
+        );
+    }
 }

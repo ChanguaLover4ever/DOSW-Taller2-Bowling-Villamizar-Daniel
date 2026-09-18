@@ -127,4 +127,16 @@ class BowlingGameTest {
             game.roll(4);
         }, "The 10th frame should accept up to 3 rolls when a strike is rolled");
     }
+
+    @Test
+    void shouldReturnFalse_whenGameJustStarted() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertFalse(
+                game.isComplete(),
+                "A new game should not be complete"
+        );
+    }
 }

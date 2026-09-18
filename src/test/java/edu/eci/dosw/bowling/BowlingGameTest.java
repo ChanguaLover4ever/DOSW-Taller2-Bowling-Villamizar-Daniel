@@ -1,0 +1,229 @@
+package edu.eci.dosw.bowling;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class BowlingGameTest {
+
+    @Test
+    void shouldRegisterZeroPinsAndNotThrowException_whenRollingZero() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(0);
+
+        // Assert
+        assertEquals(1, game.getFrames().size(), "There should be exactly 1 frame registered");
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenRollingNegativePins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> game.roll(-1),
+                "Rolling a negative number of pins should throw IllegalArgumentException"
+        );
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenRollingMoreThanTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> game.roll(11),
+                "Rolling more than 10 pins in a single roll should throw IllegalArgumentException"
+        );
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenTwoRollsInAFrameExceedTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        game.roll(7);
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> game.roll(6),
+                "The sum of two rolls in a single frame cannot exceed 10 pins"
+        );
+    }
+
+    @Test
+    void shouldThrowIllegalStateException_whenRollingAfterGameIsComplete() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        // Roll 20 times to complete 10 normal frames without strikes or spares
+        for (int i = 0; i < 20; i++) {
+            game.roll(0);
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> game.roll(5),
+                "Rolling after 10 frames are complete should throw IllegalStateException"
+        );
+    }
+
+    @Test
+    void shouldMarkFrameAsStrike_whenRollingTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(10);
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                FrameType.STRIKE,
+                game.getFrames().get(0).getType(),
+                "Frame should be marked as STRIKE when 10 pins are knocked down on the first roll"
+        );
+    }
+
+    @Test
+    void shouldMarkFrameAsSpare_whenRollingTenPinsInTwoRolls() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(5);
+        game.roll(5);
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                FrameType.SPARE,
+                game.getFrames().get(0).getType(),
+                "Frame should be marked as SPARE when 10 pins are knocked down in two rolls"
+        );
+    }
+
+    @Test
+    void shouldAcceptThreeRollsInTenthFrame_whenStrikeIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Roll 9 normal frames (18 rolls of 0 pins)
+        for (int i = 0; i < 18; i++) {
+            game.roll(0);
+        }
+
+        // Act & Assert
+        // First roll of the 10th frame is a strike
+        game.roll(10);
+
+        // The next two bonus rolls should be accepted without exceptions
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
+            game.roll(5);
+            game.roll(4);
+        }, "The 10th frame should accept up to 3 rolls when a strike is rolled");
+    }
+
+    @Test
+    void shouldReturnFalse_whenGameJustStarted() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertFalse(
+                game.isComplete(),
+                "A new game should not be complete"
+        );
+    }
+
+    @Test
+    void shouldReturnFalse_whenOnlyNineFramesArePlayed() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 18; i++) {
+            game.roll(1); // 9 frames (18 rolls) hitting 1 pin each
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertFalse(
+                game.isComplete(),
+                "A game should not be complete after only 9 frames"
+        );
+    }
+
+    @Test
+    void shouldReturnTrue_whenTenNormalFramesAreCompleted() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 20; i++) {
+            game.roll(1); // 10 frames normales (20 tiros de 1 pino)
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A game should be complete after 10 normal frames"
+        );
+    }
+
+    @Test
+    void shouldReturnTrue_whenTenthFrameIsSpareAndBonusRollIsPlayed() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 18; i++) {
+            game.roll(0); // 9 frames de ceros
+        }
+
+        // Act: Frame 10 con spare y un tiro extra
+        game.roll(5);
+        game.roll(5); // Spare
+        game.roll(3); // Tiro bonus
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A game should be complete after a spare in the 10th frame and one bonus roll"
+        );
+    }
+
+    @Test
+    void shouldReturnTrue_whenTenthFrameIsStrikeAndTwoBonusRollsArePlayed() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 18; i++) {
+            game.roll(0); // 9 blank frames
+        }
+
+        // Act: Frame 10 with a strike and two bonus rolls
+        game.roll(10); // Strike
+        game.roll(4);  // Bonus roll 1
+        game.roll(3);  // Bonus roll 2
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A game should be complete after a strike in the 10th frame and two bonus rolls"
+        );
+    }
+
+    @Test
+    void shouldReturnTrue_whenPerfectGameIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        for (int i = 0; i < 12; i++) {
+            game.roll(10); // 12 strikes consecutivos
+        }
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A perfect game should be complete after 12 strikes"
+        );
+    }
+}

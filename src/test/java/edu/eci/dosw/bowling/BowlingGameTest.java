@@ -89,4 +89,21 @@ class BowlingGameTest {
                 "Frame should be marked as STRIKE when 10 pins are knocked down on the first roll"
         );
     }
+
+    @Test
+    void shouldMarkFrameAsSpare_whenRollingTenPinsInTwoRolls() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(5);
+        game.roll(5);
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                FrameType.SPARE,
+                game.getFrames().get(0).getType(),
+                "Frame should be marked as SPARE when 10 pins are knocked down in two rolls"
+        );
+    }
 }

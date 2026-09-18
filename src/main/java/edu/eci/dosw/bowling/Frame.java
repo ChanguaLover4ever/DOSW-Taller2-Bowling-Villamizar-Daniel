@@ -40,4 +40,8 @@ public class Frame {
         }
         return rolls == 2 || getType() == FrameType.STRIKE;
     }
+
+    public int getPinsKnockedDown() {
+        return pinsKnockedDown;
+    }
 }

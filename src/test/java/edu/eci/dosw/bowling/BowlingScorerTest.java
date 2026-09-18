@@ -24,4 +24,22 @@ class BowlingScorerTest {
         // Assert
         assertEquals(0, score, "A game with all gutter balls should score 0");
     }
+
+    @Test
+    void shouldReturnSumOfPins_whenNoStrikesOrSparesAreRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        rollMany(game, 20, 1);
+        BowlingScorer scorer = new BowlingScorer();
+
+        // Act
+        int score = scorer.calculate(game.getFrames());
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                20,
+                score,
+                "A game with 1 pin per roll should score 20"
+        );
+    }
 }

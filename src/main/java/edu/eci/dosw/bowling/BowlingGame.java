@@ -23,6 +23,11 @@ public class BowlingGame {
         if (pins < 0){
             throw new IllegalArgumentException("Pins cannot be negative");
         }
+
+        if (pins > 10){
+            throw new IllegalArgumentException("Cannot roll more than ten pins");
+        }
+
         Frame frame = new Frame();
         frames.add(frame);
     }

@@ -56,4 +56,21 @@ class BowlingGameTest {
                 "The sum of two rolls in a single frame cannot exceed 10 pins"
         );
     }
+
+    @Test
+    void shouldThrowIllegalStateException_whenRollingAfterGameIsComplete() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        // Roll 20 times to complete 10 normal frames without strikes or spares
+        for (int i = 0; i < 20; i++) {
+            game.roll(0);
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> game.roll(5),
+                "Rolling after 10 frames are complete should throw IllegalStateException"
+        );
+    }
 }

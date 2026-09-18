@@ -12,11 +12,14 @@ public class Frame {
         rolls++;
     }
 
-    public boolean isFull() {
-        return rolls == 2; // For now, a frame is full after 2 rolls
+    public FrameType getType() {
+        if (rolls == 1 && pinsKnockedDown == 10) {
+            return FrameType.STRIKE;
+        }
+        return FrameType.NORMAL;
     }
 
-    public FrameType getType() {
-        return FrameType.NORMAL; // Hardcoded to force a failure
+    public boolean isFull() {
+        return rolls == 2 || getType() == FrameType.STRIKE;
     }
 }

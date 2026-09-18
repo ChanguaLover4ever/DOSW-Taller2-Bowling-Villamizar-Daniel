@@ -14,7 +14,14 @@ public class BowlingScorer {
                 score += frames.get(i + 1).getFirstRoll();
             } else if (frame.getType() == FrameType.STRIKE && i + 1 < frames.size()) {
                 Frame nextFrame = frames.get(i + 1);
-                score += nextFrame.getFirstRoll() + nextFrame.getSecondRoll();
+
+                // If the next frame is also a strike, we need the first roll of the frame after that
+                if (nextFrame.getType() == FrameType.STRIKE && i + 2 < frames.size()) {
+                    score += nextFrame.getFirstRoll() + frames.get(i + 2).getFirstRoll();
+                } else {
+                    // Otherwise, the next frame has at least two rolls we can use
+                    score += nextFrame.getFirstRoll() + nextFrame.getSecondRoll();
+                }
             }
         }
         return score;

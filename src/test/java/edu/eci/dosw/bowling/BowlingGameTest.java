@@ -106,4 +106,25 @@ class BowlingGameTest {
                 "Frame should be marked as SPARE when 10 pins are knocked down in two rolls"
         );
     }
+
+    @Test
+    void shouldAcceptThreeRollsInTenthFrame_whenStrikeIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Roll 9 normal frames (18 rolls of 0 pins)
+        for (int i = 0; i < 18; i++) {
+            game.roll(0);
+        }
+
+        // Act & Assert
+        // First roll of the 10th frame is a strike
+        game.roll(10);
+
+        // The next two bonus rolls should be accepted without exceptions
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
+            game.roll(5);
+            game.roll(4);
+        }, "The 10th frame should accept up to 3 rolls when a strike is rolled");
+    }
 }

@@ -29,4 +29,17 @@ class BowlingGameTest {
                 "Rolling a negative number of pins should throw IllegalArgumentException"
         );
     }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenRollingMoreThanTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> game.roll(11),
+                "Rolling more than 10 pins in a single roll should throw IllegalArgumentException"
+        );
+    }
 }

@@ -139,4 +139,19 @@ class BowlingGameTest {
                 "A new game should not be complete"
         );
     }
+
+    @Test
+    void shouldReturnFalse_whenOnlyNineFramesArePlayed() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 18; i++) {
+            game.roll(1); // 9 frames (18 rolls) hitting 1 pin each
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertFalse(
+                game.isComplete(),
+                "A game should not be complete after only 9 frames"
+        );
+    }
 }

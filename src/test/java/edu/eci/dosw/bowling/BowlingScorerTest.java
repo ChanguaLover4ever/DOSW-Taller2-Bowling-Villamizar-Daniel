@@ -142,4 +142,19 @@ class BowlingScorerTest {
                 "A perfect game with 12 strikes should score exactly 300"
         );
     }
+
+    @Test
+    void shouldThrowIllegalStateException_whenScoringIncompleteGame() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        rollMany(game, 10, 5); // Only 5 frames played
+        BowlingScorer scorer = new BowlingScorer();
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> scorer.calculate(game.getFrames()),
+                "Scoring an incomplete game should throw an IllegalStateException"
+        );
+    }
 }

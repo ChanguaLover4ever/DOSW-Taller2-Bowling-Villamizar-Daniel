@@ -42,4 +42,18 @@ class BowlingGameTest {
                 "Rolling more than 10 pins in a single roll should throw IllegalArgumentException"
         );
     }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenTwoRollsInAFrameExceedTenPins() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        game.roll(7);
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> game.roll(6),
+                "The sum of two rolls in a single frame cannot exceed 10 pins"
+        );
+    }
 }

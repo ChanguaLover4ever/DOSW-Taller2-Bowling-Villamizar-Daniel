@@ -16,6 +16,9 @@ public class Frame {
         if (rolls == 1 && pinsKnockedDown == 10) {
             return FrameType.STRIKE;
         }
+        if (rolls == 2 && pinsKnockedDown == 10) {
+            return FrameType.SPARE;
+        }
         return FrameType.NORMAL;
     }
 

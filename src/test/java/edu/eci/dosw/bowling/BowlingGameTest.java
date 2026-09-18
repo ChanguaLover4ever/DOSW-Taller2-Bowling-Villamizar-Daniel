@@ -154,4 +154,19 @@ class BowlingGameTest {
                 "A game should not be complete after only 9 frames"
         );
     }
+
+    @Test
+    void shouldReturnTrue_whenTenNormalFramesAreCompleted() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 20; i++) {
+            game.roll(1); // 10 frames normales (20 tiros de 1 pino)
+        }
+
+        // Act & Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A game should be complete after 10 normal frames"
+        );
+    }
 }

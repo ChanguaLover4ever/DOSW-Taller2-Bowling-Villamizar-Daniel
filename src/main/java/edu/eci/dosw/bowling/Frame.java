@@ -6,10 +6,8 @@ public class Frame {
     private int rolls = 0;
     private boolean isTenthFrame = false;
 
-    // Default constructor for standard frames
     public Frame() {}
 
-    // Constructor to specify if it is the 10th frame
     public Frame(boolean isTenthFrame) {
         this.isTenthFrame = isTenthFrame;
     }
@@ -20,14 +18,24 @@ public class Frame {
         }
         pinsKnockedDown += pins;
         rolls++;
-        individualRolls.add(pins); // Guardar el tiro
+        individualRolls.add(pins);
     }
 
+    // Nuevos métodos para encapsular el estado
+    public boolean isStrike() {
+        return rolls == 1 && pinsKnockedDown == 10;
+    }
+
+    public boolean isSpare() {
+        return rolls == 2 && pinsKnockedDown == 10;
+    }
+
+    // Refactorizado para usar los nuevos métodos booleanos
     public FrameType getType() {
-        if (rolls == 1 && pinsKnockedDown == 10) {
+        if (isStrike()) {
             return FrameType.STRIKE;
         }
-        if (rolls == 2 && pinsKnockedDown == 10) {
+        if (isSpare()) {
             return FrameType.SPARE;
         }
         return FrameType.NORMAL;
@@ -36,10 +44,10 @@ public class Frame {
     public boolean isFull() {
         if (isTenthFrame) {
             if (rolls == 3) return true;
-            if (rolls == 2 && pinsKnockedDown < 10) return true; // Ends at 2 if no strike or spare
+            if (rolls == 2 && pinsKnockedDown < 10) return true;
             return false;
         }
-        return rolls == 2 || getType() == FrameType.STRIKE;
+        return rolls == 2 || isStrike();
     }
 
     public int getFirstRoll() {

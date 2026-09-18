@@ -20,7 +20,7 @@ public class BowlingGame {
     /** Registra pinos derribados. Lanza IllegalArgumentException si pines < 0 o > 10.
      *  Lanza IllegalStateException si el juego ya termino. */
     public void roll(int pins) {
-        if (frames.size() == 10 && frames.get(9).isFull()) {
+        if (isComplete()) {
             throw new IllegalStateException("Cannot roll, the game is complete");
         }
 
@@ -28,13 +28,15 @@ public class BowlingGame {
             throw new IllegalArgumentException("The number of pins is not valid");
         }
 
-        // Create a new frame if the list is empty or the last frame is full
+        Frame currentFrame = getOrCreateCurrentFrame();
+        currentFrame.addRoll(pins);
+    }
+
+    private Frame getOrCreateCurrentFrame() {
         if (frames.isEmpty() || frames.get(frames.size() - 1).isFull()) {
             frames.add(new Frame());
         }
-
-        // Add the roll to the current frame
-        frames.get(frames.size() - 1).addRoll(pins);
+        return frames.get(frames.size() - 1);
     }
 
     /** Puntaje total. Lanza IllegalStateException si el juego no esta completo. */
@@ -45,8 +47,7 @@ public class BowlingGame {
 
     /** true cuando los 10 frames han sido completados. */
     public boolean isComplete() {
-        // TODO: implementar con TDD
-        return false;
+        return frames.size() == 10 && frames.get(9).isFull();
     }
 
     public List<Frame> getFrames() { return List.copyOf(frames); }

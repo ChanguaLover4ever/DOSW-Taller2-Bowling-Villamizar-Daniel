@@ -64,4 +64,26 @@ class BowlingScorerTest {
                 "A spare should add the next roll's pins as a bonus"
         );
     }
+
+    @Test
+    void shouldAddNextTwoRollsBonus_whenStrikeIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(10); // STRIKE
+        game.roll(4);
+        game.roll(3);
+        rollMany(game, 16, 0);
+
+        BowlingScorer scorer = new BowlingScorer();
+        int score = scorer.calculate(game.getFrames());
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                24,
+                score,
+                "A strike should add the next two rolls as a bonus"
+        );
+    }
 }

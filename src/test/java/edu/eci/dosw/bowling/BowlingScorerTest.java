@@ -86,4 +86,27 @@ class BowlingScorerTest {
                 "A strike should add the next two rolls as a bonus"
         );
     }
+
+    @Test
+    void shouldAddBonusFromTwoDifferentFrames_whenConsecutiveStrikesAreRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        game.roll(10); // STRIKE (Frame 1)
+        game.roll(10); // STRIKE (Frame 2)
+        game.roll(3);  // Frame 3, Roll 1
+        game.roll(4);  // Frame 3, Roll 2
+        rollMany(game, 14, 0); // 7 frames restantes (14 tiros en cero)
+
+        BowlingScorer scorer = new BowlingScorer();
+        int score = scorer.calculate(game.getFrames());
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                47,
+                score,
+                "Consecutive strikes should calculate the bonus across multiple frames"
+        );
+    }
 }

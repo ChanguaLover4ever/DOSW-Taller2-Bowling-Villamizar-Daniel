@@ -169,4 +169,24 @@ class BowlingGameTest {
                 "A game should be complete after 10 normal frames"
         );
     }
+
+    @Test
+    void shouldReturnTrue_whenTenthFrameIsSpareAndBonusRollIsPlayed() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+        for (int i = 0; i < 18; i++) {
+            game.roll(0); // 9 frames de ceros
+        }
+
+        // Act: Frame 10 con spare y un tiro extra
+        game.roll(5);
+        game.roll(5); // Spare
+        game.roll(3); // Tiro bonus
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A game should be complete after a spare in the 10th frame and one bonus roll"
+        );
+    }
 }

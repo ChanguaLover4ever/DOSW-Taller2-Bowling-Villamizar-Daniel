@@ -209,4 +209,21 @@ class BowlingGameTest {
                 "A game should be complete after a strike in the 10th frame and two bonus rolls"
         );
     }
+
+    @Test
+    void shouldReturnTrue_whenPerfectGameIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        for (int i = 0; i < 12; i++) {
+            game.roll(10); // 12 strikes consecutivos
+        }
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertTrue(
+                game.isComplete(),
+                "A perfect game should be complete after 12 strikes"
+        );
+    }
 }

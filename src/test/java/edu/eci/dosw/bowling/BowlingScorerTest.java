@@ -109,4 +109,23 @@ class BowlingScorerTest {
                 "Consecutive strikes should calculate the bonus across multiple frames"
         );
     }
+
+    @Test
+    void shouldScore300_whenPerfectGameIsRolled() {
+        // Arrange
+        BowlingGame game = new BowlingGame();
+
+        // Act
+        rollMany(game, 12, 10); // 12 consecutive strikes
+
+        BowlingScorer scorer = new BowlingScorer();
+        int score = scorer.calculate(game.getFrames());
+
+        // Assert
+        org.junit.jupiter.api.Assertions.assertEquals(
+                300,
+                score,
+                "A perfect game with 12 strikes should score exactly 300"
+        );
+    }
 }

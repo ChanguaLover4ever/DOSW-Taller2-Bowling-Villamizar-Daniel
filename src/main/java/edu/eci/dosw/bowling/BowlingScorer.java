@@ -5,6 +5,9 @@ import java.util.List;
 public class BowlingScorer {
 
     public int calculate(List<Frame> frames) {
+        if (frames.size() < 10) {
+            throw new IllegalStateException("Cannot score an incomplete game");
+        }
         int score = 0;
         for (int i = 0; i < frames.size(); i++) {
             Frame frame = frames.get(i);

@@ -46,6 +46,10 @@ public class Frame {
         return individualRolls.isEmpty() ? 0 : individualRolls.get(0);
     }
 
+    public int getSecondRoll() {
+        return individualRolls.size() > 1 ? individualRolls.get(1) : 0;
+    }
+
     public int getPinsKnockedDown() {
         return pinsKnockedDown;
     }

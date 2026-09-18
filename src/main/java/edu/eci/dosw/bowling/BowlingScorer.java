@@ -10,9 +10,11 @@ public class BowlingScorer {
             Frame frame = frames.get(i);
             score += frame.getPinsKnockedDown();
 
-            // Sumar el bono si es un SPARE y no es el último frame
             if (frame.getType() == FrameType.SPARE && i + 1 < frames.size()) {
                 score += frames.get(i + 1).getFirstRoll();
+            } else if (frame.getType() == FrameType.STRIKE && i + 1 < frames.size()) {
+                Frame nextFrame = frames.get(i + 1);
+                score += nextFrame.getFirstRoll() + nextFrame.getSecondRoll();
             }
         }
         return score;
